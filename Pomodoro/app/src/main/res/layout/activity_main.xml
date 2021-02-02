@@ -7,15 +7,77 @@
     tools:context=".MainActivity"
     tools:ignore="ExtraText">
 
+    <SeekBar
+        android:id="@+id/angiArbeidMinutter"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:max="300"
+        android:min="15"
+        app:layout_constraintBottom_toTopOf="@id/countDownView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.261" />
+
+    <SeekBar
+        android:id="@+id/angiPauseMinutter"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:max="20"
+        app:layout_constraintBottom_toTopOf="@id/countDownView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/angiArbeidMinutter"
+        app:layout_constraintVertical_bias="0.326" />
+
     <TextView
         android:id="@+id/countDownView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_time_display"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.595" />
+
+    <TextView
+        android:id="@+id/repetisjonerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repetisjonerText"
+        app:layout_constraintBottom_toTopOf="@id/countDownView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/angiPauseMinutter"
+        app:layout_constraintVertical_bias="0.404" />
+
+    <TextView
+        android:id="@+id/arbeidText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/arbeidText"
+        app:layout_constraintBottom_toTopOf="@id/angiArbeidMinutter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.793" />
+
+    <TextView
+        android:id="@+id/pauseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pauseText"
+        app:layout_constraintBottom_toTopOf="@id/angiPauseMinutter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/angiArbeidMinutter"
+        app:layout_constraintVertical_bias="0.794" />
 
     <Button
         android:id="@+id/startCountdownButton"
@@ -27,21 +89,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countDownView" />
 
-    <Button
-        android:id="@+id/button30Minutes"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="300dp"
-        android:layout_marginBottom="499dp"
-        android:text="@string/thirtym"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <EditText
+        android:id="@+id/repetisjoner"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@id/countDownView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/angiPauseMinutter"
+        app:layout_constraintVertical_bias="0.586" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -49,74 +107,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="button30Minutes"
-        tools:ignore="UnknownId" />
-
-    <Button
-        android:id="@+id/button60Minutes"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="121dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="209dp"
-        android:layout_marginBottom="499dp"
-        android:text="@string/sixtym"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.642"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/button90Minutes"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="209dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="121dp"
-        android:layout_marginBottom="499dp"
-        android:text="@string/ninetym"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/button120Minutes"
-        android:layout_width="60dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="499dp"
-        android:text="@string/hundredTwentym"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="163dp"
-        android:layout_marginTop="118dp"
-        android:layout_marginEnd="164dp"
-        android:layout_marginBottom="594dp"
-        android:text="Angi minutter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
