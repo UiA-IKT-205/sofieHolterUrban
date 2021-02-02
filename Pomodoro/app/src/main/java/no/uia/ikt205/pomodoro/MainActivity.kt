@@ -1,107 +1,121 @@
 package no.uia.ikt205.pomodoro
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import no.uia.ikt205.pomodoro.util.millisecondsToDescriptiveTime
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var timer:CountDownTimer
-    lateinit var startButton:Button
-    lateinit var coutdownDisplay:TextView
-    lateinit var thirtym:Button
-    lateinit var sixtym:Button
-    lateinit var ninetym:Button
-    lateinit var hundredTwentym:Button
-
-
-    var timeToCountDownInMs = 6000L
+    private lateinit var timer:CountDownTimer
+    private lateinit var timerPause:CountDownTimer
+    private lateinit var startButton:Button
+    private lateinit var countdownDisplay:TextView
+    private lateinit var seekBar: SeekBar
+    private lateinit var antallRepetisjoner: EditText
+    var timeToCountDownInMs = 0L
+    var timeToCountDownInMsPause = 0L
     val timeTicks = 1000L
-
+    val timeTicksPause = 1000L
+    var countdownRunning=false
+    var pauseCountdownRun=false
+    var repetisjon = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        startButton = findViewById<Button>(R.id.startCountdownButton)
-        startButton.setOnClickListener(){
-            startCountDown(it)
-            startButton.isClickable=false
-            thirtym.isClickable=false
-            sixtym.isClickable=false
-            ninetym.isClickable=false
-            hundredTwentym.isClickable=false
+        // seekbar for arbeidstid i minutter
+        antallRepetisjoner = findViewById(R.id.repetisjoner)
+        seekBar = findViewById(R.id.angiArbeidMinutter)
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                timeToCountDownInMs = progress * 60000L
+                updateCountDownDisplay(timeToCountDownInMs)
+            }
 
-        }
-        //30 min knapp
-        thirtym = findViewById(R.id.button30Minutes)
-        thirtym.setOnClickListener(){
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                updateCountDownDisplay(timeToCountDownInMs)
+            }
 
-            timeToCountDownInMs = 1800000L
-            updateCountDownDisplay(timeToCountDownInMs)
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                updateCountDownDisplay(timeToCountDownInMs)
+            }
 
+        })
+        // seekbar for pausetid angitt i minutter
+        seekBar = findViewById(R.id.angiPauseMinutter)
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                timeToCountDownInMsPause = progress * 60000L
+                updateCountDownDisplay(timeToCountDownInMsPause)
+            }
 
-            //60 min knapp
-        }
-        sixtym = findViewById(R.id.button60Minutes)
-        sixtym.setOnClickListener(){
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                updateCountDownDisplay(timeToCountDownInMsPause)
+            }
 
-            timeToCountDownInMs = 3600000L
-            updateCountDownDisplay(timeToCountDownInMs)
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                updateCountDownDisplay(timeToCountDownInMsPause)
+            }
+        })
 
-
-        }
-        //90 min knapp
-        ninetym = findViewById(R.id.button90Minutes)
-        ninetym.setOnClickListener(){
-
-            timeToCountDownInMs = 5400000L
-            updateCountDownDisplay(timeToCountDownInMs)
-
-
-        }
-        //120 min knapp
-        hundredTwentym = findViewById(R.id.button120Minutes)
-        hundredTwentym.setOnClickListener(){
-
-            timeToCountDownInMs = 7200000L
-            updateCountDownDisplay(timeToCountDownInMs)
-
-
+        //startknapp starter nedtelling når arbeid, pause og repetisjoner er angitt
+        startButton = findViewById(R.id.startCountdownButton)
+        startButton.setOnClickListener {
+            if (!countdownRunning && !pauseCountdownRun){
+                repetisjon = antallRepetisjoner.text.toString().toInt()
+                startCountDown(it)
+                return@setOnClickListener}
+            Toast.makeText(this@MainActivity,"Arbeidsøkt pågår", Toast.LENGTH_SHORT).show()
         }
 
-        coutdownDisplay = findViewById<TextView>(R.id.countDownView)
-
+        countdownDisplay = findViewById(R.id.countDownView)
     }
 
     fun startCountDown(v: View){
 
         timer = object : CountDownTimer(timeToCountDownInMs,timeTicks) {
             override fun onFinish() {
-                Toast.makeText(this@MainActivity,"Arbeidsøkt er ferdig", Toast.LENGTH_SHORT).show()
-                thirtym.isClickable=true
-                sixtym.isClickable=true
-                ninetym.isClickable=true
-                startButton.isClickable=true
-                hundredTwentym.isClickable=true
+                Toast.makeText(this@MainActivity,"Arbeidsøkt ferdig", Toast.LENGTH_SHORT).show()
+                if (!pauseCountdownRun && repetisjon >0){
+                    startCountDownPause(v)
+                }
+                repetisjon --
+                countdownRunning = false
             }
 
             override fun onTick(millisUntilFinished: Long) {
                 updateCountDownDisplay(millisUntilFinished)
+                countdownRunning =true
+                pauseCountdownRun =false
             }
         }
 
         timer.start()
     }
 
-    fun updateCountDownDisplay(timeInMs:Long){
-        coutdownDisplay.text = millisecondsToDescriptiveTime(timeInMs)
+    fun startCountDownPause(v: View){
+        timerPause = object : CountDownTimer(timeToCountDownInMsPause,timeTicksPause) {
+            override fun onFinish() {
+                Toast.makeText(this@MainActivity,"Pause ferdig", Toast.LENGTH_SHORT).show()
+                if (!countdownRunning && repetisjon > 0)
+                    startCountDown(v)
+                pauseCountdownRun = false
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+                updateCountDownDisplay(millisUntilFinished)
+                pauseCountdownRun = true
+                countdownRunning = false
+            }
+        }
+
+        timerPause.start()
     }
-
-
+    fun updateCountDownDisplay(timeInMs:Long){
+        countdownDisplay.text = millisecondsToDescriptiveTime(timeInMs)
+    }
 }
